@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String?
+  password String
+  role     String   @default("user")
+  cart     Cart[]
+}
+
+model Product {
+  id          Int @id @default(autoincrement())
+  productId   Int @unique
+  description String
+  price       Float
+  discount    Float
+  stock       Int
+  category    String
+  specifications String
+  cart        Cart[]
+}
+
+model Cart {
+  id      Int @id @default(autoincrement())
+  userId  Int @unique 
+  product Product[]
+  user    User @relation(fields: [userId], references: [id])
+}
+
+//tarea: crear el front para agregar productos y carritos.
